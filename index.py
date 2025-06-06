@@ -32,7 +32,7 @@ playing = True
 speed = 1.0
 frame_cnt = 0
 max_speed = 8.0
-min_speed = 0.125 # 1/8
+min_speed = 0.125 
 white = (255, 255, 255)
 title = "20234194_VideoPlayer_with_OpenCV"
 
@@ -57,7 +57,8 @@ while movie.isOpened():
     cv2.imshow(title, frame) # title 정보 표시
 
     #key = cv2.waitKeyEx(100) # 100ms 동안 키 이벤트 대기 <- 이거 하면 딜레이 증가해버림
-    key = cv2.waitKey(int(30/speed)) & 0xFF # 100ms 동안 키 이벤트 대기
+    key = cv2.waitKeyEx(int(30/speed))#  동안 키 이벤트 대기
+    #print("Key값은: ", key) # 키 입력 테스트를 위함
 
     # 키 입력 처리
     if key == 27: # esc 키 누르면 종료
@@ -66,16 +67,20 @@ while movie.isOpened():
         playing = not playing
     elif key == ord('0'): # 숫자 ‘0’을 클릭
         movie.set(cv2.CAP_PROP_POS_FRAMES, 0) # 프레임 수를 0으로 초기화
-    elif key == 81: # 방향키 ‘좌’ 클릭
+    #elif key == 2424832: # Windows OS 기준 - 방향키 ‘좌’ 클릭
+    elif key == 63234: # MAC OS 기준 -  방향키 ‘좌’ 클릭
         frame_change = max(0, movie.get(cv2.CAP_PROP_POS_FRAMES) - 5) # 현재 가지고 온 프레임에서 -5
-        movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change)
-    elif key == 83: # 방향키 ‘우’ 클릭
+        movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change) # -5 한 프레임 값으로 영상 프레임 설정
+    #elif key == 2555904: # Windows OS 기준 - 방향키 ‘우’ 클릭
+    elif key == 63235: # MAC OS 기준 -  방향키 ‘우’ 클릭
         frame_change = min(movie.get(cv2.CAP_PROP_FRAME_COUNT)-1, movie.get(cv2.CAP_PROP_POS_FRAMES) + 5) # 현재 가지고 온 프레임에서 +5
-        movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change)
-    elif key == 82: # 방향키 ‘위’ 클릭
-        print()
-    elif key == 84: # 방향키 ‘아래’ 클릭
-        print()
+        movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change) # +5 한 프레임 값으로 영상 프레임 설정
+    #elif key == 2490368: # Windows OS 기준 - 방향키 ‘좌’ 클릭
+    elif key == 63232: # MAC OS 기준 -  방향키 ‘상’ 클릭
+        speed = min(max_speed, speed * 2)
+    #elif key == 2621440: # Windows OS 기준 - 방향키 ‘좌’ 클릭
+    elif key == 63233: # MAC OS 기준 -  방향키 ‘하’ 클릭
+        speed = max(min_speed, speed / 2)
     elif key == ord('s'): # 문자키 ‘s’ 클릭
         cv2.imwrite(f"frame_{frame_cnt}.png", frame)
 
