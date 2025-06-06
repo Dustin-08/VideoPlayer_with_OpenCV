@@ -33,31 +33,34 @@ speed = 1.0
 frame_cnt = 0
 max_speed = 8.0
 min_speed = 0.125 
-white = (255, 255, 255)
+white = (255, 255, 255) # 텍스트 색상
 title = "20234194_VideoPlayer_with_OpenCV"
 
+# 영상이 안 열렸다면
 if movie.isOpened() == False:
     print("동영상 파일이 없거나 형식이 맞지 않습니다.(The video file is missing or in the incorrect format.)")
 
+# 영상이 열렸다면 열려있는동안 동작하는 부분
 while movie.isOpened():
-    if playing:
+    if playing: 
         # 영상에서 프레임 읽기
         ret, frame = movie.read()
         if not ret: # ret = false면, 프레임이 제대로 읽히지 않았다는 것
             break
         frame_cnt = int(movie.get(cv2.CAP_PROP_POS_FRAMES)) # 캡처되는 프레임 번호를 frame_cnt에 입력
     else:
-        # 일시정지 상태에서 프레임 유지
+        # 일시정지 상태에서는 프레임 번호 유지
         frame_cnt = frame_cnt
 
     # 화면 정보(배속, 프레임수) 우상단에 표시
     text = f"current speed: x{speed} frame_cnt: {frame_cnt}"
-    cv2.putText(frame, text, (frame.shape[1]-700, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
+    cv2.putText(frame, text, (1200, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
     cv2.namedWindow(title) # 윈도우 이름
     cv2.imshow(title, frame) # title 정보 표시
 
     #key = cv2.waitKeyEx(100) # 100ms 동안 키 이벤트 대기 <- 이거 하면 딜레이 증가해버림
-    key = cv2.waitKeyEx(int(30/speed))#  동안 키 이벤트 대기
+    FPS = movie.get(cv2.CAP_PROP_FPS) # 보통 FPS는 30이지만, 30이 아닌 영상을 위해
+    key = cv2.waitKeyEx(int(1000 / FPS / speed)) # fps에 맞춰서 딜레이 주기
     #print("Key값은: ", key) # 키 입력 테스트를 위함
 
     # 키 입력 처리
@@ -69,20 +72,20 @@ while movie.isOpened():
         movie.set(cv2.CAP_PROP_POS_FRAMES, 0) # 프레임 수를 0으로 초기화
     #elif key == 2424832: # Windows OS 기준 - 방향키 ‘좌’ 클릭
     elif key == 63234: # MAC OS 기준 -  방향키 ‘좌’ 클릭
-        frame_change = max(0, movie.get(cv2.CAP_PROP_POS_FRAMES) - 5) # 현재 가지고 온 프레임에서 -5
+        frame_change = max(0, movie.get(cv2.CAP_PROP_POS_FRAMES) - 5) # 현재 가지고 온 프레임에서 -5, 후에 max(a, b)로 두 값중 더 큰 값 선택
         movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change) # -5 한 프레임 값으로 영상 프레임 설정
     #elif key == 2555904: # Windows OS 기준 - 방향키 ‘우’ 클릭
     elif key == 63235: # MAC OS 기준 -  방향키 ‘우’ 클릭
-        frame_change = min(movie.get(cv2.CAP_PROP_FRAME_COUNT)-1, movie.get(cv2.CAP_PROP_POS_FRAMES) + 5) # 현재 가지고 온 프레임에서 +5
+        frame_change = min(movie.get(cv2.CAP_PROP_FRAME_COUNT)-1, movie.get(cv2.CAP_PROP_POS_FRAMES) + 5) # 프레임 번호가 0부터 시작하기에 전체 프레임 개수에서 1 빼기, 후에 현재 가지고 온 프레임에서 +5, min(a, b)로 두 값중 더 작은 값 선택
         movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change) # +5 한 프레임 값으로 영상 프레임 설정
     #elif key == 2490368: # Windows OS 기준 - 방향키 ‘좌’ 클릭
     elif key == 63232: # MAC OS 기준 -  방향키 ‘상’ 클릭
-        speed = min(max_speed, speed * 2)
+        speed = min(max_speed, speed * 2) # speed x2배를 한 후에, min(a, b)로 두 값중 더 작은 값 선택
     #elif key == 2621440: # Windows OS 기준 - 방향키 ‘좌’ 클릭
     elif key == 63233: # MAC OS 기준 -  방향키 ‘하’ 클릭
-        speed = max(min_speed, speed / 2)
+        speed = max(min_speed, speed / 2) # speed를 x1/2배를 한 후에, max(a, b)로 두 값중 더 큰 값 선택 
     elif key == ord('s'): # 문자키 ‘s’ 클릭
-        cv2.imwrite(f"frame_{frame_cnt}.png", frame)
+        cv2.imwrite(f"frame_{frame_cnt}.png", frame) # 파일명을 프레임으로 저장
 
 # 비디오 캡쳐 메모리 해제
 movie.release()
