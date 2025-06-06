@@ -54,7 +54,10 @@ while movie.isOpened():
 
     # 화면 정보(배속, 프레임수) 우상단에 표시
     text = f"current speed: x{speed} frame_cnt: {frame_cnt}"
-    cv2.putText(frame, text, (1200, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
+    # Window OS 기준
+    cv2.putText(frame, text, (1000, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
+    # MAC OS 기준
+    #cv2.putText(frame, text, (1200, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
     cv2.namedWindow(title) # 윈도우 이름
     cv2.imshow(title, frame) # title 정보 표시
 
@@ -70,19 +73,19 @@ while movie.isOpened():
         playing = not playing
     elif key == ord('0'): # 숫자 ‘0’을 클릭
         movie.set(cv2.CAP_PROP_POS_FRAMES, 0) # 프레임 수를 0으로 초기화
-    #elif key == 2424832: # Windows OS 기준 - 방향키 ‘좌’ 클릭
-    elif key == 63234: # MAC OS 기준 -  방향키 ‘좌’ 클릭
+    elif key == 2424832: # Windows OS 기준 - 방향키 ‘좌’ 클릭
+    #elif key == 63234: # MAC OS 기준 -  방향키 ‘좌’ 클릭
         frame_change = max(0, movie.get(cv2.CAP_PROP_POS_FRAMES) - 5) # 현재 가지고 온 프레임에서 -5, 후에 max(a, b)로 두 값중 더 큰 값 선택
         movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change) # -5 한 프레임 값으로 영상 프레임 설정
-    #elif key == 2555904: # Windows OS 기준 - 방향키 ‘우’ 클릭
-    elif key == 63235: # MAC OS 기준 -  방향키 ‘우’ 클릭
+    elif key == 2555904: # Windows OS 기준 - 방향키 ‘우’ 클릭
+    #elif key == 63235: # MAC OS 기준 -  방향키 ‘우’ 클릭
         frame_change = min(movie.get(cv2.CAP_PROP_FRAME_COUNT)-1, movie.get(cv2.CAP_PROP_POS_FRAMES) + 5) # 프레임 번호가 0부터 시작하기에 전체 프레임 개수에서 1 빼기, 후에 현재 가지고 온 프레임에서 +5, min(a, b)로 두 값중 더 작은 값 선택
         movie.set(cv2.CAP_PROP_POS_FRAMES, frame_change) # +5 한 프레임 값으로 영상 프레임 설정
-    #elif key == 2490368: # Windows OS 기준 - 방향키 ‘좌’ 클릭
-    elif key == 63232: # MAC OS 기준 -  방향키 ‘상’ 클릭
+    elif key == 2490368: # Windows OS 기준 - 방향키 ‘좌’ 클릭
+    #elif key == 63232: # MAC OS 기준 -  방향키 ‘상’ 클릭
         speed = min(max_speed, speed * 2) # speed x2배를 한 후에, min(a, b)로 두 값중 더 작은 값 선택
-    #elif key == 2621440: # Windows OS 기준 - 방향키 ‘좌’ 클릭
-    elif key == 63233: # MAC OS 기준 -  방향키 ‘하’ 클릭
+    elif key == 2621440: # Windows OS 기준 - 방향키 ‘좌’ 클릭
+    #elif key == 63233: # MAC OS 기준 -  방향키 ‘하’ 클릭
         speed = max(min_speed, speed / 2) # speed를 x1/2배를 한 후에, max(a, b)로 두 값중 더 큰 값 선택 
     elif key == ord('s'): # 문자키 ‘s’ 클릭
         cv2.imwrite(f"frame_{frame_cnt}.png", frame) # 파일명을 프레임으로 저장
