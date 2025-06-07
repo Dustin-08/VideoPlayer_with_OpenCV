@@ -57,9 +57,6 @@ while movie.isOpened():
 
     # 화면 정보(배속, 프레임수) 우상단에 표시
     text = f"current speed: x{speed} frame_cnt: {frame_cnt}"
-    # Window OS 기준
-    #cv2.putText(frame, text, (1000, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
-    # MAC OS 기준
     cv2.putText(frame, text, (1200, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
     cv2.namedWindow(title) # 윈도우 이름
     cv2.imshow(title, frame) # title 정보 표시
