@@ -20,11 +20,12 @@
         - 문자키 ‘s’ 클릭 → 현재 프레임 이미지 저장 (프레임 번호로 저장)
         - ‘ESC’ 클릭 → 프로그램 종료
     5. 동영상 화면에 표시되어야 하는 항목
-        - 현재 재생 속도 (예) x1, x2 x1/2 등
+        - 현재 재생 속도 (예) x1, x2, x1/2 등
         - 현재 동영상 프레임 번호 (예) #27
 """
 # OpenCV 라이브러리 import
 import cv2
+from fractions import Fraction # 재생 속도를 소수점이 아닌 분수 형태로 나타내기 위해 Fraction 라이브러리 import
 
 # 동영상 파일 자동 열기(동일 경로에 영상 두기)
 movie = cv2.VideoCapture('movie.mp4')
@@ -56,7 +57,9 @@ while movie.isOpened():
         frame_cnt = frame_cnt
 
     # 화면 정보(배속, 프레임수) 우상단에 표시
-    text = f"current speed: x{speed} frame_cnt: {frame_cnt}"
+    # 참고: https://aiday.tistory.com/78 <- 4. Converting a float to fraction 참고해서 작성
+    fraction = Fraction.from_float(speed) # 계산 용이를 위해 소수점으로 우선 계산 후, 화면에 표시할때만 분수로 변환해서 이를 화면에 표시
+    text = f"current speed: x{fraction} frame_cnt: #{frame_cnt}"
     cv2.putText(frame, text, (1200, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
     cv2.namedWindow(title) # 윈도우 이름
     cv2.imshow(title, frame) # title 정보 표시
@@ -89,7 +92,7 @@ while movie.isOpened():
     #elif key == 63233: # MAC OS 기준 -  방향키 ‘하’ 클릭
         speed = max(min_speed, speed / 2) # speed를 x1/2배를 한 후에, max(a, b)로 두 값중 더 큰 값 선택(초기에 설정한 최저 배속값만큼까지만 배속이 내려가게 제한을 두기 위해)
     elif key == ord('s'): # 문자키 ‘s’ 클릭
-        cv2.imwrite(f"frame_{frame_cnt}.png", frame) # 파일명을 프레임 번호로 저장
+        cv2.imwrite(f"frame_#{frame_cnt}.png", frame) # 파일명을 프레임 번호로 저장
 
 # 비디오 캡쳐 메모리 해제
 movie.release()
