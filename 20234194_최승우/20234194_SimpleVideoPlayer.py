@@ -70,7 +70,7 @@ while movie.isOpened():
     key = cv2.waitKeyEx(int(1000 / FPS / speed)) # fps에 맞춰서 딜레이 주기
     #print("Key값은: ", key) # 키 입력 테스트를 위함
 
-    # 키 입력 처리
+    # 키 입력 처리(MAC OS 환경에서 개발하면서, Window OS와 MAC OS가 방향키(화살표) 키값이 다르다는 것을 파악하여 2가지로 나타내었습니다.)
     if key == 27: # esc 키 누르면 종료
         break
     elif key == ord(' '): # spacebar 키 입력시
