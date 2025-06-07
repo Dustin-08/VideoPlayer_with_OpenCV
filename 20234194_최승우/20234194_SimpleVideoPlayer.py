@@ -60,7 +60,7 @@ while movie.isOpened():
     # 참고: https://aiday.tistory.com/78 <- 4. Converting a float to fraction 참고해서 작성
     fraction = Fraction.from_float(speed) # 계산 용이를 위해 소수점으로 우선 계산 후, 화면에 표시할때만 분수로 변환해서 이를 화면에 표시
     text = f"current speed: x{fraction}, current frame_cnt: #{frame_cnt}"
-    cv2.putText(frame, text, (1100, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
+    cv2.putText(frame, text, (1050, 50), cv2.FONT_HERSHEY_COMPLEX, 1, white, 2)
     cv2.namedWindow(title) # 윈도우 이름
     cv2.imshow(title, frame) # title 정보 표시
 
