@@ -92,7 +92,7 @@ while movie.isOpened():
     #elif key == 63233: # MAC OS 기준 -  방향키 ‘하’ 클릭
         speed = max(min_speed, speed / 2) # speed를 x1/2배를 한 후에, max(a, b)로 두 값중 더 큰 값 선택(초기에 설정한 최저 배속값만큼까지만 배속이 내려가게 제한을 두기 위해)
     elif key == ord('s'): # 문자키 ‘s’ 클릭
-        cv2.imwrite(f"frame_{frame_cnt}.png", frame) # 파일명을 프레임으로 저장
+        cv2.imwrite(f"frame_{frame_cnt}.png", frame) # 파일명을 프레임 번호로 저장
 
 # 비디오 캡쳐 메모리 해제
 movie.release()
